@@ -6,6 +6,7 @@ spec:
   containers:
     - name: kubia
       image: luksa/kubia-unhealthy
+      # we can check the liveness of the pod from [host]:8080/
       livenessProbe:
         httpGet:
           path: /

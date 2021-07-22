@@ -1,4 +1,6 @@
 apiVersion: apps/v1
+# ReplicaSet is an enhanced version of ReplicaController.
+# Use this rather than ReplicaController.
 kind: ReplicaSet
 metadata:
   name: kubia
@@ -7,11 +9,19 @@ spec:
   selector:
     matchLabels:
       app: kubia
+    # ReplicaSet can match expressions
     matchExpressions:
+      # for example, this will match all the pods that has
+      # label key of "app" and its value "kubia"
       - key: app
         operator: In
         values:
           - kubia
+      # this will ignore any pods that have "dev" values for "state" label
+      - key: state
+        operator: NotIn
+        values:
+          - dev
   template:
     metadata:
       labels:

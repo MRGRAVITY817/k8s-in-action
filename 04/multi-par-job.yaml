@@ -3,6 +3,7 @@ kind: Job
 metadata:
   name: multi-par-batch-job
 spec:
+  # this will complete 5 pods in 3 rounds = 2 + 2 + 1 (parallel)
   completions: 5
   parallelism: 2
   template:

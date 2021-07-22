@@ -11,6 +11,7 @@ spec:
       labels:
         app: ssd-monitor
     spec:
+      # DaemonSet will create pod only for the nodes that has ssd
       nodeSelector:
         disk: ssd
       containers:
