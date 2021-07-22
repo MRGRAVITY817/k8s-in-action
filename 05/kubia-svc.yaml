@@ -12,7 +12,9 @@ spec:
     app: kubia
   ports:
     # if the pod listens to multiple ports, we can also expose mutliple ports too.
-    - port: 80
-      targetPort: 8080
-    - port: 443
-      targetPort: 8443
+    - name: http
+      port: 80
+      targetPort: http
+    - name: https
+      port: 443
+      targetPort: https
