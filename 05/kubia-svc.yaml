@@ -3,8 +3,16 @@ kind: Service
 metadata:
   name: kubia
 spec:
+  # normally querying to pod will end up getting response
+  # from randomly selected pod within the service.
+  # By setting "sessionAffinity" as "ClientIP",
+  # we can get pod response that we asked for.
+  sessionAffinity: ClientIP
   selector:
     app: kubia
   ports:
+    # if the pod listens to multiple ports, we can also expose mutliple ports too.
     - port: 80
       targetPort: 8080
+    - port: 443
+      targetPort: 8443
