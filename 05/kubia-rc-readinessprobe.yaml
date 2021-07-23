@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: kubia
+spec:
+  replicas: 3
+  selector:
+    app: kubia
+  template:
+    metadata:
+      name: kubia
+      labels:
+        app: kubia
+    spec:
+      containers:
+        - name: kubia
+          image: mrgravity817/kubia
+          # Readiness probe will periodically below "exec" and following
+          # commands, and if it exits with zero, it means ready.
+          # But if it exits with nonzero, it means not ready.
+          # You should ALWAYS DEFINE readiness probe
+          # or else your pod will be always added to the endpoint,
+          # whether it's ready or not.
+          readinessProbe:
+            exec:
+              command:
+                - ls
+                - /var/ready
