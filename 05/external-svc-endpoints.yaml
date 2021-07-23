@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: external-service # the name should match with service name
+subsets:
+  # cluster can manage to connect outside world with these endpoints,
+  # and disconnect also if we don't want to.
+  - addresses:
+      - ip: 11.11.11.11
+      - ip: 22.22.22.
+    ports:
+      - port: 80
