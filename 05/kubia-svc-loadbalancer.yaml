@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubia-loadbalancer
+spec:
+  # LoadBalance will expose only one external IP,
+  # and balance the load randomly
+  type: LoadBalancer
+  selector:
+    app: kubia
+  ports:
+    - port: 80
+      targetPort: 8080
