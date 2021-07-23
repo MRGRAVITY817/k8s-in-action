@@ -17,11 +17,11 @@ spec:
         operator: In
         values:
           - kubia
-      # this will ignore any pods that have "dev" values for "state" label
-      - key: state
-        operator: NotIn
-        values:
-          - dev
+      # # this will ignore any pods that have "dev" values for "state" label
+      # - key: state
+      #   operator: NotIn
+      #   values:
+      #     - dev
   template:
     metadata:
       labels:
