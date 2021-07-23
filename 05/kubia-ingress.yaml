@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kubia
+spec:
+  rules:
+    # external clients can access service with this host name.
+    - host: kubia.example.com
+      http:
+        # ingress can contain list of paths that leads to services
+        # host can have multiple paths
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: kubia-nodeport
+                port:
+                  number: 80
+          - pathType: Prefix
+            path: "/load"
+            backend:
+              service:
+                name: kubia-loadbalancer
+                port:
+                  number: 80
+    # ingress can expose multiple hosts
+    - host: hoon.example.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: kubia-something
+                port:
+                  number: 80
