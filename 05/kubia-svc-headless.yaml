@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubia-headless
+spec:
+  # By setting clusterIP to none, it will return a list of pod IPs
+  # instead of the cluster DNS(head), and that's why this is called headless service.
+  clusterIP: None
+  selector:
+    app: kubia
+  ports:
+    - port: 80
+      targetPort: 8080
