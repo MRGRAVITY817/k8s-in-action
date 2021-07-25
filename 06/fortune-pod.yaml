@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fortune
+spec:
+  containers:
+    - name: html-generator
+      image: luksa/fortune
+      volumeMounts:
+        # html-generator container will mount html in /var/htdocs
+        - mountPath: /var/htdocs
+          name: html
+    - name: web-server
+      image: nginx:alpine
+      volumeMounts:
+        # web-server container will mount html in /var/htdocs
+        - mountPath: /usr/share/nginx/html
+          name: html
+          readOnly: true
+      ports:
+        - containerPort: 80
+          protocol: TCP
+  # Two containers will both use volume called 'html'
+  volumes:
+    - name: html
+      emptyDir: {}
