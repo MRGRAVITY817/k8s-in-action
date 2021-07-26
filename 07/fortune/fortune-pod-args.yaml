@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fortune2s
+spec:
+  containers:
+    - name: html-generator
+      image: mrgravity817/fortune:args
+      # 'args' property will add arguement to script
+      args:
+        - "2"
+      volumeMounts:
+        - mountPath: /var/htdocs
+          name: html
