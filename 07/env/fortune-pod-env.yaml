@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fortuneEnvs
+spec:
+  containers:
+    - name: html-generator
+      image: mrgravity817/fortune:env
+      # 'env' property will set env var for container
+      env:
+        - name: INTERVAL
+          value: "30"
+        # You can refer other env var using $(VAR)
+        - name: SECOND
+          value: "$(INTERVAL)0"
+      volumeMounts:
+        - mountPath: /var/htdocs
+          name: html
