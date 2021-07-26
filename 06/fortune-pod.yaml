@@ -23,4 +23,5 @@ spec:
   # Two containers will both use volume called 'html'
   volumes:
     - name: html
+      # this will create temporary, non-persistent data
       emptyDir: {}
