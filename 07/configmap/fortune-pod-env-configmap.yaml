@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fortune-env-from-configmap
+spec:
+  containers:
+    - name: html-generator
+      image: mrgravity/fortune:env
+      # 'env' prop will set env var
+      env:
+        - name: INTERVAL
+          valueFrom:
+            # 'configMapKeyRef' will get configMap data
+            # that matches with the given key
+            configMapKeyRef:
+              name: fortune-config
+              key: sleep-interval
+      volumeMounts:
+        - mountPath: /var/htdocs
+          name: html
