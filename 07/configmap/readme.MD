@@ -2,7 +2,6 @@
 ConfigMap is a key:value map that can store configuration info of containers.
 
 ## Creating a `ConfigMap` 
-### From command
 1. Using `--from-literal` option
 ```bash
 $ kubectl create configmap myconfigmap \
@@ -31,4 +30,34 @@ $ kubectl create configmap my-config
           --from-file=foo.json \
 ```
 
+## Passing a ConfigMap entry to a container
+1. We can pass configmap entry using `valueFrom` field.
+```yaml
+...
+      env:
+        - name: INTERVAL
+          valueFrom:
+            # 'configMapKeyRef' will get configMap data
+            # that matches with the given key
+            configMapKeyRef:
+              name: fortune-config
+              key: sleep-interval
+...
+```
 
+2. We can also pass the entire env vars in configmap using `envForm`.
+```yaml
+# assume we have "FOO" "BAR" "FOO-BAR" in my-config-map
+...
+      spec:
+        containers:
+        - image: some-image
+          envFrom: 
+          # we will get only "CONFIG_FOO" and "CONFIG_BAR",
+          # but not "CONFIG_FOO-BAR" since the prefix key word
+          # will ignore the hyphen.
+          - prefix: CONFIG_
+            configMapRef: 
+              name: my-config-map
+...
+```
