@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fortune-args-from-configmap
+spec:
+  containers:
+    - name: html-generator
+      image: mrgravity/fortune:args
+      env:
+        - name: INTERVAL
+          valueFrom:
+            configMapKeyRef:
+              name: fortune-config
+              key: sleep-interval
+      # Reference env var and pass it to cmd line args
+      args: ["$(INTERVAL)"]
