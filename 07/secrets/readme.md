@@ -13,3 +13,21 @@ $ echo bar > foo
 $ kubectl create secret generic fortune-https --from-file=https.key --from=file=https.cert --from-file=foo
 ```
 Then the contents of the `secret` will be encoded into Base64-strings.
+
+## Creating a `secret` for auth with Docker Registry
+For that use, we use special type of `secret` called `docker-registry` (wow, no one could have guessed that!)
+```bash
+$ kubectl create secret docker-registry mydockerhubsecret \ 
+  --docker-username=myusername --docker-password=mypassword --docker-email=my.email@provider.com
+```
+Then pull the image from private registry
+```yaml
+...
+	spec:
+		imagePullSecrets
+		- name: mydockerhubsecret
+		containers:
+		- image: username/private:tag
+			name: main
+...
+```
