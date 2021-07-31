@@ -68,3 +68,47 @@ Because pods can have multiple containers, don't forget to define container name
 ...
 ```
 Since using downward api is easy but limited, it should be used for reffering to comparably simple metatdata.
+
+## How to explore cluster metadata?
+### `kubectl proxy`
+Of course you can access metadata from actual https://cluster.api, but it can be cumbersome since we need to define -k variable or ca certs for `https`. Yet we have better solution. 
+```bash
+$ kubectl proxy
+# starting to serve at http://localhost:8001
+```
+this will start local proxy server that you can curl in.
+
+### Explore with endpoints
+When proxy server has started, try various endpoints to explore various metadata.
+```bash
+$ curl http://localhost:8001/apis/batch
+$ curl http://localhost:8001/apis/batch/v1
+$ curl http://localhost:8001/apis/batch/v1/jobs
+...
+```
+
+### How to get cluster info from pod?
+When you look inside the pod filesystem, you'll find ca.crt, namespace, and token inside /var/run/secrets/kubernetes.io/serviceaccount. Those are accommodated for every pods.
+Use curl command with extra options to get K8 api.
+```console
+# export CURL_CA_BUNDLE=/var/run/secrets/kubernetes.io/serivceaccount/ca.crt
+# TOKEN=$(/var/run/secrets/kubernetes.io/serivceaccount/token)
+# NS=$(/var/run/secrets/kubernetes.io/serivceaccount/namespace)
+# curl -H "Authorization: Bearer $TOKEN" https://kubernetes/api/v1/namepaces/$NS/pods
+...
+```
+But this can be very difficult. Use ambassador instead.
+
+### Using ambassador to get cluster data from pod(recommended!).
+By extra container called `ambassador`, our life will get easier :D
+```yaml
+...
+- name: ambassador
+  image: luksa/kubectl-proxy:1.6.2
+...
+```
+```console
+$ kubectl exec -it <podname> -c main bash
+# curl localhost:8001
+...
+```
