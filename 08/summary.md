@@ -112,3 +112,14 @@ $ kubectl exec -it <podname> -c main bash
 # curl localhost:8001
 ...
 ```
+
+## Use client libraries to talk with API server
+When you plan to use more functionalities with api server, try exploring language specific k8 client libraries! 
+- Golang client—https://github.com/kubernetes/client-go
+- Python—https://github.com/kubernetes-incubator/client-python
+- Java client by Fabric8—https://github.com/fabric8io/kubernetes-client
+- Java client by Amdatu—https://bitbucket.org/amdatulabs/amdatu-kubernetes
+- Node.js client by tenxcloud—https://github.com/tenxcloud/node-kubernetes-client 
+- Node.js client by GoDaddy—https://github.com/godaddy/kubernetes-client
+- PHP—https://github.com/devstub/kubernetes-api-php-client
+- Another PHP client—https://github.com/maclof/kubernetes-client
