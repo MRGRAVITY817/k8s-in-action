@@ -28,8 +28,43 @@ For normal metadata, you use `fieldRef` prop, for resource related you can use `
 				# this divisor will send the amount of cpu size
 				# divided by 1millicore, or one thousandths.
 				divisor: 1m 
-
 ...
 ```
+You can find out pod's env var with following command
+```bash
+$ kubectl exec downward -- env
+```
 
-
+### Passing metadata through files with volume
+Since metadata like labels or annotations cannot be passed through env var, we use volumes to mount files that refer those info.
+```yaml
+...
+spec:
+  containers: 
+...
+		volumeMounts: 
+		- name: downward
+		  mountPath: /etc/downward
+	volumes: 
+	- name: downward
+	  downwardAPI:
+...
+		- path: "labels"
+		  fieldRef:
+			  fieldPath: metadata.labels
+		- path: "annotations"
+		  fieldRef:
+			  fieldPath: metadata.annotations
+...
+```
+Because pods can have multiple containers, don't forget to define container name for resource data.
+```yaml
+...
+		- path: "containerCpuRequestMillicores"
+		  resourceFieldRef:
+			  containerName: main
+				resource: requests.cpu
+				divisor: 1m
+...
+```
+Since using downward api is easy but limited, it should be used for reffering to comparably simple metatdata.

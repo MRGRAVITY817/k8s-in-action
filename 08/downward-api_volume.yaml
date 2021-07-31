@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: downward
+  labels:
+    foo: bar
+  annotations:
+    key1: value1
+    key2: val |
+      ue 2
+spec:
+  containers:
+    - name: main
+      image: busybox
+      command: ["sleep", "999999999"]
+      resources:
+        requests:
+          cpu: "15m"
+          memory: "100Ki"
+        limits:
+          cpu: "100m"
+          memory: "4Mi"
+      volumeMounts:
+        - mountPath: /etc/downward
+          name: downward
+  volumes:
+    - name: downward
+      downwardAPI:
+        items:
+          - path: "podName"
+            fieldRef:
+              fieldPath: metadata.name
+          - path: "podNameSpace"
+            fieldRef:
+              fieldPath: metadata.namespace
+          - path: "podIp"
+            fieldRef:
+              fieldPath: metadata.podIP
+          - path: "nodeName"
+            fieldRef:
+              fieldPath: spec.nodeName
+          - path: "serviceAccount"
+            fieldRef:
+              fieldPath: spec.serviceAccountName
+          - path: "containerCpuReq"
+            resourceFieldRef:
+              containerName: main
+              resource: requests.cpu
+              divisor: 1m
+          - path: "containerMemoryLimit"
+            resourceFieldRef:
+              containerName: main
+              resource: limits.memory
+              divisor: 1Ki
