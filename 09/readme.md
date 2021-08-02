@@ -43,8 +43,36 @@ it's useful for modifying a single property without opening in a text editor.
 This will update image.
 ```console
 $ kubectl set image deployment kubia nodejs=luksa/kubia:v2
+$ kubectl get po 
+
+NAME                     READY   STATUS        RESTARTS   AGE
+kubia-74967b5695-2nmts   1/1     Terminating   0          14m
+kubia-74967b5695-h45v9   1/1     Terminating   0          14m
+kubia-74967b5695-zccc4   1/1     Terminating   0          14m
+kubia-bcf9bb974-7mdp6    1/1     Running       0          6s
+kubia-bcf9bb974-sjrph    1/1     Running       0          9s
+kubia-bcf9bb974-vfncz    1/1     Running       0          18s
 ```
-There are also other updating options like:
+### Other options for updating object
 - kubectl edit: Opens default editor to patch object 
 - kubectl apply: Modifies the object with given yaml file, it needs the full description of a resource
 - kubectl replace: Replaces the object, and needs actual object prehandedly
+
+## Undoing rollout(version down)
+If the current version is having trouble, we should version down.
+```console
+$ kubectl rollout undo deployment kubia
+```
+You can see the rollout history with `history` keyword
+```console
+$ kubectl rollout history deployment kubia
+
+deployment.apps/kubia 
+REVISION  CHANGE-CAUSE
+2         kubectl create --filename=kubia-deployment-v1.yaml --record=true
+3         kubectl create --filename=kubia-deployment-v1.yaml --record=true
+```
+You can see the `REVISION` in console result, which can be used as version history number that we can go back with `--to-revision` keyword.
+```console
+$ kubectl rollout undo deployment kubia --to-revision=1
+```
