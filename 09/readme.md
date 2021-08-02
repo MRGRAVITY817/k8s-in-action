@@ -76,3 +76,16 @@ You can see the `REVISION` in console result, which can be used as version histo
 ```console
 $ kubectl rollout undo deployment kubia --to-revision=1
 ```
+
+## Controlling rate of rollout 
+We can specify the number of pods tolerated to be when rollout with `maxSurge` and `maxUnavailable`.
+```yaml
+...
+  spec:
+	  strategy:
+		  # this will tolerate 2~4 pods when updating deployment
+		  rollingUpdate:
+			  maxSurge: 1 # or by using percent
+			  maxUnavailable: 1 # or by using percent
+...
+```
