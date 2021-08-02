@@ -101,3 +101,15 @@ and can be resumed.
 ```console
 $ kubectl rollout resume deployment kubia
 ```
+
+## How to not update for unehealthy image?
+Use `readinessProbe` and `minReadySeconds` to check healthiness before deploying it.
+```yaml
+...
+		readinessProbe:
+			periodSeconds: 1
+			httpGet:
+				path: /
+				port: 8080
+...
+```
