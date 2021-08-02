@@ -89,3 +89,15 @@ We can specify the number of pods tolerated to be when rollout with `maxSurge` a
 			  maxUnavailable: 1 # or by using percent
 ...
 ```
+
+## Pausing and Resuming the rollout process
+Rollout can be paused during the udpate
+```console
+$ kubectl set image deployment kubia nodejs=luksa/kubia:v4
+<!-- I want to pause! -->
+$ kubectl rollout pause deployment kubia
+```
+and can be resumed.
+```console
+$ kubectl rollout resume deployment kubia
+```
