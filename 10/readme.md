@@ -65,4 +65,4 @@ $ kubectl edit statefulset kubia
 ```
 
 ## Pods disconnected cannot be reached
-When the node is disconnected, then the control plane in that node will kill the pods. So no need for hurry to kill them by yourself.
+When the node is disconnected, then the control plane in the master node will kill the pods. So no need for hurry to kill them by yourself.
